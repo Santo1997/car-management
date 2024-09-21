@@ -1,0 +1,112 @@
+[
+  {
+    "id": 1,
+    "name": "Honda Civic",
+    "brand": "Honda",
+    "model": "Civic",
+    "year": 2020,
+    "car_type": "Sedan",
+    "daily_rent_price": 40,
+    "availability": true,
+    "image": "https://images.unsplash.com/photo-1525198748134-37e71b522e9c?fm=jpg&q=60&w=3000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8Y2FyJTIwcHJvZmlsZXxlbnwwfHwwfHx8MA%3D%3D"
+  },
+  {
+    "id": 2,
+    "name": "Toyota Corolla",
+    "brand": "Toyota",
+    "model": "Corolla",
+    "year": 2019,
+    "car_type": "Sedan",
+    "daily_rent_price": 35,
+    "availability": true,
+    "image": "https://images.unsplash.com/photo-1525198748134-37e71b522e9c?fm=jpg&q=60&w=3000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8Y2FyJTIwcHJvZmlsZXxlbnwwfHwwfHx8MA%3D%3D"
+  },
+  {
+    "id": 3,
+    "name": "Ford Mustang",
+    "brand": "Ford",
+    "model": "Mustang",
+    "year": 2021,
+    "car_type": "Coupe",
+    "daily_rent_price": 80,
+    "availability": false,
+    "image": "https://images.unsplash.com/photo-1525198748134-37e71b522e9c?fm=jpg&q=60&w=3000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8Y2FyJTIwcHJvZmlsZXxlbnwwfHwwfHx8MA%3D%3D"
+  },
+  {
+    "id": 4,
+    "name": "Chevrolet Tahoe",
+    "brand": "Chevrolet",
+    "model": "Tahoe",
+    "year": 2022,
+    "car_type": "SUV",
+    "daily_rent_price": 100,
+    "availability": true,
+    "image": "https://images.unsplash.com/photo-1525198748134-37e71b522e9c?fm=jpg&q=60&w=3000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8Y2FyJTIwcHJvZmlsZXxlbnwwfHwwfHx8MA%3D%3D"
+  },
+  {
+    "id": 5,
+    "name": "Tesla Model 3",
+    "brand": "Tesla",
+    "model": "Model 3",
+    "year": 2023,
+    "car_type": "Electric",
+    "daily_rent_price": 120,
+    "availability": false,
+    "image": "https://images.unsplash.com/photo-1525198748134-37e71b522e9c?fm=jpg&q=60&w=3000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8Y2FyJTIwcHJvZmlsZXxlbnwwfHwwfHx8MA%3D%3D"
+  },
+  {
+    "id": 6,
+    "name": "BMW X5",
+    "brand": "BMW",
+    "model": "X5",
+    "year": 2021,
+    "car_type": "SUV",
+    "daily_rent_price": 110,
+    "availability": true,
+    "image": "https://images.unsplash.com/photo-1525198748134-37e71b522e9c?fm=jpg&q=60&w=3000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8Y2FyJTIwcHJvZmlsZXxlbnwwfHwwfHx8MA%3D%3D"
+  },
+  {
+    "id": 7,
+    "name": "Audi A4",
+    "brand": "Audi",
+    "model": "A4",
+    "year": 2020,
+    "car_type": "Sedan",
+    "daily_rent_price": 70,
+    "availability": true,
+    "image": "https://images.unsplash.com/photo-1525198748134-37e71b522e9c?fm=jpg&q=60&w=3000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8Y2FyJTIwcHJvZmlsZXxlbnwwfHwwfHx8MA%3D%3D"
+  },
+  {
+    "id": 8,
+    "name": "Mercedes-Benz GLE",
+    "brand": "Mercedes-Benz",
+    "model": "GLE",
+    "year": 2019,
+    "car_type": "SUV",
+    "daily_rent_price": 130,
+    "availability": false,
+    "image": "https://images.unsplash.com/photo-1525198748134-37e71b522e9c?fm=jpg&q=60&w=3000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8Y2FyJTIwcHJvZmlsZXxlbnwwfHwwfHx8MA%3D%3D"
+  },
+  {
+    "id": 9,
+    "name": "Volkswagen Passat",
+    "brand": "Volkswagen",
+    "model": "Passat",
+    "year": 2020,
+    "car_type": "Sedan",
+    "daily_rent_price": 50,
+    "availability": true,
+    "image": "https://images.unsplash.com/photo-1525198748134-37e71b522e9c?fm=jpg&q=60&w=3000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8Y2FyJTIwcHJvZmlsZXxlbnwwfHwwfHx8MA%3D%3D"
+  },
+  {
+    "id": 10,
+    "name": "Jeep Wrangler",
+    "brand": "Jeep",
+    "model": "Wrangler",
+    "year": 2022,
+    "car_type": "SUV",
+    "daily_rent_price": 90,
+    "availability": false,
+    "image": "https://images.unsplash.com/photo-1525198748134-37e71b522e9c?fm=jpg&q=60&w=3000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8Y2FyJTIwcHJvZmlsZXxlbnwwfHwwfHx8MA%3D%3D"
+  }
+]

@@ -1,0 +1,37 @@
+[
+  {
+    "carID": 1,
+    "startDate": "2024-09-01",
+    "endDate": "2024-09-04"
+  },
+  {
+    "carID": 2,
+    "startDate": "2024-09-04",
+    "endDate": "2024-09-08"
+  },
+  {
+    "carID": 3,
+    "startDate": "2024-09-08",
+    "endDate": "2024-09-12"
+  },
+  {
+    "carID": 4,
+    "startDate": "2024-09-12",
+    "endDate": "2024-09-15"
+  },
+  {
+    "carID": 5,
+    "startDate": "2024-09-15",
+    "endDate": "2024-09-18"
+  },
+  {
+    "carID": 6,
+    "startDate": "2024-09-18",
+    "endDate": "2024-09-21"
+  },
+  {
+    "carID": 7,
+    "startDate": "2024-09-21",
+    "endDate": "2024-09-24"
+  }
+]
