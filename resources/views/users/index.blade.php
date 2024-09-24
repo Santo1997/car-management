@@ -55,20 +55,21 @@
     @section('script')
         <script>
             async function fetchCars() {
-                const carList = document.getElementById("car-list");
-                const carType = document.getElementById("car-type").value;
-                const brand = document.getElementById("brand").value;
-                const priceFilter = document.getElementById("price").value;
-
+                showLoader();
+                let carList = document.getElementById("car-list");
+                let carType = document.getElementById("car-type").value;
+                let brand = document.getElementById("brand").value;
+                let priceFilter = document.getElementById("price").value;
                 carList.innerHTML = "";
 
                 try {
-                    let res = await axios.get("./sample/cars.json");
+                    let res = await axios.get("/api/cars");
+                    let carData = res.data.data;
 
-                    const filteredCars = res.data.filter((car) => {
+                    const filteredCars = carData.filter((car) => {
                         const matchesType = !carType || car.car_type === carType;
                         const matchesBrand = !brand || car.brand === brand;
-                        const matchesPrice = !priceFilter || car.daily_rent_price == priceFilter;
+                        const matchesPrice = !priceFilter || parseInt(car.daily_rent_price) === parseInt(priceFilter);
                         return matchesType && matchesBrand && matchesPrice;
                     });
 
@@ -84,23 +85,23 @@
                     });
 
                     bookingDates();
+                    showLoader(false);
                 } catch (error) {
                     console.error("Error fetching cars:", error);
                 }
             }
 
-
             async function brandsAndTypes() {
-                const carType = document.getElementById("car-type");
-                const brand = document.getElementById("brand");
+                let carType = document.getElementById("car-type");
+                let brand = document.getElementById("brand");
 
                 try {
-                    let res = await axios.get("sample/cars.json");
-
+                    let res = await axios.get("/api/cars");
+                    let carData = res.data.data;
                     const brandOptions = new Set();
                     const carTypeOptions = new Set();
 
-                    res.data.forEach((car) => {
+                    carData.forEach((car) => {
                         brandOptions.add(car.brand);
                         carTypeOptions.add(car.car_type);
                     });
@@ -111,7 +112,6 @@
                     console.error("Error fetching brands and types:", error);
                 }
             }
-
 
             function generateOptions(options, defaultOption) {
                 let html = `<option value="">${defaultOption}</option>`;
@@ -144,6 +144,7 @@
             }
 
             function confirmBooking() {
+                showLoader();
                 const bookingModal = document.getElementById("booking-modal");
                 const carID = document.getElementById("carID").value;
                 const bookedDates = document.getElementById("bookedDates").value.split(" to ");
@@ -156,18 +157,21 @@
 
                 flatpickr("#bookedDates").clear();
                 console.log(bookingDetails);
+                showLoader(false);
                 bookingModal.close();
             }
 
             async function dateBooked(id) {
+                showLoader();
                 try {
-                    let res = await axios.get("sample/rental.json");
+                    let res = await axios.get("/api/rentals");
+                    let rentalData = res.data.data;
 
-                    const disabledDates = res.data
-                        .filter((date) => date.carID == id)
+                    const disabledDates = rentalData
+                        .filter((date) => date.car_id === parseInt(id))
                         .map((date) => ({
-                            from: date.startDate,
-                            to: date.endDate,
+                            from: date.start_date,
+                            to: date.end_date,
                         }));
 
                     flatpickr("#bookedDates", {
@@ -177,6 +181,7 @@
                         static: true,
                         inline: true,
                     });
+                    showLoader(false);
                 } catch (error) {
                     console.error("Error disabling dates:", error);
                 }

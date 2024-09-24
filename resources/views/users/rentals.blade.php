@@ -44,41 +44,43 @@
         </div>
     </div>
 
-
     @section('script')
         <script>
             async function getRentalCars() {
+                showLoader();
                 let currentBookings = document.getElementById("current-bookings");
                 let pastBookings = document.getElementById("past-bookings");
 
-                let res = await axios.get("./sample/rental.json");
-                console.log(res.data);
+                let res = await axios.post("/api/rentalInfo", {user_id: 5});
+                let rentalData = res.data.data;
 
                 let today = new Date().toISOString().split("T")[0];
 
-                res.data = res.data.map((rent) => {
-                    if (rent.endDate < today) {
+                rentalData = rentalData.map((rent) => {
+                    if (rent.end_date < today) {
                         return {...rent, status: "Complete"};
-                    } else if (rent.startDate <= today && today <= rent.endDate) {
+                    } else if (rent.start_date <= today && today <= rent.end_date) {
                         return {...rent, status: "Running"};
-                    } else if (rent.startDate > today) {
+                    } else if (rent.start_date > today) {
                         return {...rent, status: "Pending"};
                     }
                     return rent;
                 });
 
-                let currentRent = res.data.filter((rent) => rent.status === "Running" || rent.status === "Pending");
-                let pastRent = res.data.filter((rent) => rent.status === "Complete");
+                let currentRent = rentalData.filter((rent) => rent.status === "Running" || rent.status === "Pending");
+                let pastRent = rentalData.filter((rent) => rent.status === "Complete");
 
                 currentRent.map((rent) => {
                     currentBookings.innerHTML += tableRow(rent);
                 });
 
                 pastRent
-                    .sort((a, b) => new Date(b.endDate) - new Date(a.endDate))
+                    .sort((a, b) => new Date(b.end_date) - new Date(a.end_date))
                     .map((rent) => {
                         pastBookings.innerHTML += tableRow(rent);
                     });
+
+                showLoader(false);
             }
 
             function tableRow(rent) {
@@ -86,13 +88,13 @@
                     <td>
                       <div class="flex items-center gap-3">
                         <div>
-                          <div class="font-bold">${rent.carID}</div>
+                          <div class="font-bold">${rent.car_id}</div>
                           <div class="text-sm opacity-50">United States</div>
                         </div>
                       </div>
                     </td>
-                    <td>${rent.startDate}</td>
-                    <td>${rent.endDate}</td>
+                    <td>${rent.start_date}</td>
+                    <td>${rent.end_date}</td>
                     <td>${rent.status ? rent.status : "Completed"}</td>
                     <th>
                       <button class="btn btn-ghost btn-xs">Cancel</button>
