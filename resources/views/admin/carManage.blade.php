@@ -28,11 +28,15 @@
         <script>
             async function getCarList() {
                 let carList = document.getElementById("car-list");
-                let res = await axios.get("../../sample/cars.json");
-                console.log(res.data);
-                res.data.map((car) => {
-                    carList.innerHTML += `<tr>
-                        <td>${car.id}</td>
+                let res = await axios.get("/api/admin/cars");
+                let carData = res.data.data;
+                carList.innerHTML = " ";
+
+                carData
+                    .sort((a, b) => b.id - a.id)
+                    .map((car, idx) => {
+                        carList.innerHTML += `<tr>
+                        <td>${idx + 1}</td>
                         <td>
                           <div class="avatar">
                             <div class="w-16 rounded">
@@ -49,11 +53,34 @@
                         <td>${car.availability}</td>
                         <td>
                           <a href="/admin/update-car?id=${car.id}" class="btn btn-warning text-white">Edit</a>
-                          <button class="btn btn-error text-white dltBtn">Delete</button>
+                          <button data-id="${car.id}" class="btn btn-error text-white dltBtn">Delete ${car.id}</button>
                         </td>
                       </tr>`;
-                });
+                    });
             }
+
+            document.addEventListener("click", function (event) {
+                showLoader();
+                if (event.target.classList.contains("dltBtn")) {
+                    let id = event.target.getAttribute("data-id");
+
+                    axios
+                        .post("/api/admin/deleteCar", {
+                            "id": id,
+                        })
+                        .then((res) => {
+                            if (res.data.msg === "success") {
+                                getCarList();
+                                showLoader(false);
+                                toaster("Car Deleted Successfully");
+                            }
+                        })
+                        .catch((err) => {
+                            showLoader(false);
+                            toaster("Something went wrong");
+                        });
+                }
+            });
 
             getCarList();
         </script>

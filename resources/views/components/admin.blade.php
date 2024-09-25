@@ -17,11 +17,14 @@
         <input id="my-drawer-2" type="checkbox" class="drawer-toggle"/>
         <div class="drawer-content">
             <label for="my-drawer-2" class="btn btn-primary drawer-button lg:hidden"> Open drawer </label>
-
             <main class="bg-gray-100 relative">
+
                 <section class="bg-blue-600 text-white p-4 shadow-md fixed top-0 w-full z-10">
                     <h1 class="text-xl font-bold">Admin Dashboard</h1>
                 </section>
+                <div class=" absolute top-14 left-0 w-full">
+                    @include('helper.notify')
+                </div>
                 {{ $slot }}
                 <section class="bg-gray-800 text-white p-4 text-center mt-auto">
                     <p>&copy; 2024 Car Rental System. All Rights Reserved.</p>

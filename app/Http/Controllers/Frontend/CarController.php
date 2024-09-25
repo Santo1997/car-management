@@ -11,6 +11,5 @@
         public function carsList() {
             $carsList = Car::all();
             return ResponseHelper::out('success', $carsList, 200);
-
         }
     }

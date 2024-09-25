@@ -39,6 +39,7 @@
                 <h3 id="car-name" class="text-xl font-bold"></h3>
                 <div class="mx-auto py-4 relative w-fit">
                     <input id="carID" type="hidden"/>
+                    <input id="carCost" type="hidden"/>
                     <input type="text" id="bookedDates" placeholder="Select Dates"
                            class="mt-1 block w-full p-2 m-2 border border-gray-300 rounded-md shadow-sm"/>
                 </div>
@@ -56,11 +57,12 @@
         <script>
             async function fetchCars() {
                 showLoader();
-                let carList = document.getElementById("car-list");
+
                 let carType = document.getElementById("car-type").value;
                 let brand = document.getElementById("brand").value;
                 let priceFilter = document.getElementById("price").value;
-                carList.innerHTML = "";
+                let parsedPrice = parseFloat(priceFilter).toFixed(2);
+
 
                 try {
                     let res = await axios.get("/api/cars");
@@ -69,20 +71,16 @@
                     const filteredCars = carData.filter((car) => {
                         const matchesType = !carType || car.car_type === carType;
                         const matchesBrand = !brand || car.brand === brand;
-                        const matchesPrice = !priceFilter || parseInt(car.daily_rent_price) === parseInt(priceFilter);
+                        const matchesPrice = !priceFilter || car.daily_rent_price === parsedPrice;
                         return matchesType && matchesBrand && matchesPrice;
                     });
 
-                    filteredCars.forEach((car) => {
-                        carList.innerHTML += `<div class="bg-white shadow-md rounded-lg p-4">
-                              <img src="${car.image}" alt="Car" class="w-full h-40 object-cover rounded-md mb-4" />
-                              <h3 class="text-lg font-semibold">${car.name}</h3>
-                              <p class="text-gray-700"><span class="font-bold">Type:</span> ${car.car_type}</p>
-                              <p class="text-gray-700"><span class="font-bold">Brand:</span> ${car.brand}</p>
-                              <p class="text-gray-700"><span class="font-bold">Rent:</span> $${car.daily_rent_price}/day</p>
-                              <button data-id="${car.id}" data-name="${car.name}" class="mt-4 bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 booking">Book Now</button>
-                            </div>`;
-                    });
+                    if (filteredCars.length > 0) {
+                        carDetails(filteredCars)
+                    } else {
+                        document.getElementById("car-list").innerHTML = "Not Available";
+                    }
+
 
                     bookingDates();
                     showLoader(false);
@@ -113,6 +111,21 @@
                 }
             }
 
+            function carDetails(filteredCars) {
+                let carList = document.getElementById("car-list");
+                carList.innerHTML = " ";
+                filteredCars.forEach((car) => {
+                    carList.innerHTML += `<div class="bg-white shadow-md rounded-lg p-4">
+                              <img src="${car.image}" alt="Car" class="w-full h-40 object-cover rounded-md mb-4" />
+                              <h3 class="text-lg font-semibold">${car.name}</h3>
+                              <p class="text-gray-700"><span class="font-bold">Type:</span> ${car.car_type}</p>
+                              <p class="text-gray-700"><span class="font-bold">Brand:</span> ${car.brand}</p>
+                              <p class="text-gray-700"><span class="font-bold">Rent:</span> $${car.daily_rent_price}/day</p>
+                              <button data-id="${car.id}" data-name="${car.name}" data-cost="${car.daily_rent_price}" class="mt-4 bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 booking">Book Now</button>
+                            </div>`;
+                });
+            }
+
             function generateOptions(options, defaultOption) {
                 let html = `<option value="">${defaultOption}</option>`;
                 options.forEach((option) => {
@@ -128,14 +141,16 @@
             }
 
             function bookingDates() {
-                const bookingButtons = document.getElementsByClassName("booking");
-                const bookingModal = document.getElementById("booking-modal");
-                const carID = document.getElementById("carID");
-                const closeName = document.getElementById("car-name");
+                let bookingButtons = document.getElementsByClassName("booking");
+                let bookingModal = document.getElementById("booking-modal");
+                let carID = document.getElementById("carID");
+                let carCost = document.getElementById("carCost");
+                let closeName = document.getElementById("car-name");
 
                 Array.from(bookingButtons).forEach((button) => {
                     button.addEventListener("click", function () {
                         carID.value = this.getAttribute("data-id");
+                        carCost.value = this.getAttribute("data-cost");
                         closeName.innerHTML = this.getAttribute("data-name");
                         dateBooked(carID.value);
                         bookingModal.showModal();
@@ -145,18 +160,32 @@
 
             function confirmBooking() {
                 showLoader();
-                const bookingModal = document.getElementById("booking-modal");
-                const carID = document.getElementById("carID").value;
-                const bookedDates = document.getElementById("bookedDates").value.split(" to ");
+                let bookingModal = document.getElementById("booking-modal");
+                let carID = document.getElementById("carID").value;
+                let carCost = document.getElementById("carCost").value;
+                let bookedDates = document.getElementById("bookedDates").value.split(" to ");
 
                 let bookingDetails = {
-                    carID: carID,
-                    startDate: bookedDates[0],
-                    endDate: bookedDates[1],
-                };
+                    "car_id": carID,
+                    "user_id": 5,
+                    "start_date": bookedDates[0],
+                    "end_date": bookedDates[1],
+                    "cost": carCost
+                }
 
                 flatpickr("#bookedDates").clear();
-                console.log(bookingDetails);
+
+                axios
+                    .post("/api/createRental", bookingDetails)
+                    .then((response) => {
+                        if (response.data.msg === "success") {
+                            toaster("Car booked successfully");
+                        }
+                    })
+                    .catch((error) => {
+                        toaster("Something went wrong", false);
+                    });
+
                 showLoader(false);
                 bookingModal.close();
             }
@@ -177,6 +206,7 @@
                     flatpickr("#bookedDates", {
                         mode: "range",
                         dateFormat: "Y-m-d",
+                        minDate: "today",
                         disable: disabledDates,
                         static: true,
                         inline: true,

@@ -18,7 +18,7 @@
     </style>
 </head>
 <body>
-<header class="relative">
+<header>
     <div class="navbar bg-slate-800 text-white">
         <div class="navbar-start">
             <a class="btn btn-ghost text-xl">Car Rental</a>
@@ -46,23 +46,17 @@
             </ul>
         </div>
     </div>
-    <progress id="loader" class="progress progress-info absolute -bottom-2 left-0 right-0 z-10 hidden"></progress>
 </header>
+
+@include('helper.notify')
 
 <main class="relative">
     {{ $slot }}
 </main>
+
 <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 
-<script>
-    const showLoader = (shouldShow = true) => {
-        let loader = document.getElementById('loader').classList;
-        shouldShow ? loader.remove('hidden') : loader.add('hidden');
-    }
-</script>
-
 @yield('script')
-
 
 </body>
 </html>

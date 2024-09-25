@@ -1,15 +1,10 @@
 <?php
 
-    use App\Http\Controllers\Frontend\CarController;
+    use App\Http\Controllers\Frontend\CarController as FrontendCarController;
+    use App\Http\Controllers\Admin\CarController as AdminCarController;
     use App\Http\Controllers\Frontend\PageController;
     use App\Http\Controllers\Frontend\RentalController;
     use Illuminate\Support\Facades\Route;
-
-
-//    Admin Routes
-
-
-    Route::view('/admin/rental-manage', 'admin.rentManage');
 
     // user path
     Route::get('/', [PageController::class, 'index']);
@@ -27,9 +22,18 @@
     Route::get('/admin/add-customer', [PageController::class, 'addCustomer']);
     Route::get('/admin/update-customer', [PageController::class, 'updateCustomer']);
 
-    // car api path
-    Route::get('/api/cars', [CarController::class, 'carsList']);
-
-    // rental api path
+    // api path for user
+    Route::get('/api/cars', [FrontendCarController::class, 'carsList']);
     Route::get('/api/rentals', [RentalController::class, 'rentalsList']);
     Route::post('/api/rentalInfo', [RentalController::class, 'rentalDetail']);
+    Route::post('/api/createRental', [RentalController::class, 'createRental']);
+    Route::post('/api/deleteRental', [RentalController::class, 'deleteRental']);
+
+    // api path for admin
+    Route::get('/api/admin/cars', [AdminCarController::class, 'carsList']);
+    Route::get('/api/admin/carDetails/{id}', [AdminCarController::class, 'carDtails']);
+    Route::post('/api/admin/addCar', [AdminCarController::class, 'addCar']);
+    Route::post('/api/admin/updateCar/{id}', [AdminCarController::class, 'updateCar']);
+    Route::post('/api/admin/deleteCar', [AdminCarController::class, 'deleteCar']);
+
+
