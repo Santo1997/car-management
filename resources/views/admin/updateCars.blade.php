@@ -65,7 +65,7 @@
                 form.upYear.value = carInfo.year;
                 form.upCarType.value = carInfo.car_type;
                 form.upDailyRentPrice.value = carInfo.daily_rent_price;
-                form.upAvailabilityStatus.value = carInfo.availability === 1 ? "Available" : "Not Available";
+                form.upAvailabilityStatus.value = carInfo.availability === 1 ? "1" : "0";
                 form.upImage.value = carInfo.image;
                 showLoader(false)
             }

@@ -1,5 +1,6 @@
 <?php
 
+    use App\Http\Controllers\Admin\CustomerController as AdminCustomerController;
     use App\Http\Controllers\Frontend\CarController as FrontendCarController;
     use App\Http\Controllers\Admin\CarController as AdminCarController;
     use App\Http\Controllers\Frontend\PageController;
@@ -31,9 +32,14 @@
 
     // api path for admin
     Route::get('/api/admin/cars', [AdminCarController::class, 'carsList']);
-    Route::get('/api/admin/carDetails/{id}', [AdminCarController::class, 'carDtails']);
+    Route::get('/api/admin/carDetails/{id}', [AdminCarController::class, 'carDetails']);
     Route::post('/api/admin/addCar', [AdminCarController::class, 'addCar']);
     Route::post('/api/admin/updateCar/{id}', [AdminCarController::class, 'updateCar']);
     Route::post('/api/admin/deleteCar', [AdminCarController::class, 'deleteCar']);
 
+    Route::get('/api/admin/customers', [AdminCustomerController::class, 'customersList']);
+    Route::get('/api/admin/customerDetails/{id}', [AdminCustomerController::class, 'customerDetails']);
+    Route::post('/api/admin/addCustomer', [AdminCustomerController::class, 'addCustomer']);
+    Route::post('/api/admin/updateCustomer/{id}', [AdminCustomerController::class, 'updateCustomer']);
+    Route::post('/api/admin/deleteCustomer', [AdminCustomerController::class, 'deleteCustomer']);
 

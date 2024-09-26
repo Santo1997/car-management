@@ -14,7 +14,7 @@
             return ResponseHelper::out('success', $carsList, 200);
         }
 
-        public function carDtails($id) {
+        public function carDetails($id) {
             $carDetail = Car::where('id', $id)->get();
             return ResponseHelper::out('success', $carDetail, 200);
         }

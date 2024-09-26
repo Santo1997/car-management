@@ -14,6 +14,8 @@
                 $table->string('name', 255);
                 $table->string('email', 255)->unique();
                 $table->string('password', 255);
+                $table->string('phone', 255);
+                $table->string('address', 255);
                 $table->enum('role', ['admin', 'customer'])->default('customer');
                 $table->string('otp', 10);
                 $table->timestamp('updated_at')->useCurrent()->useCurrentOnUpdate();

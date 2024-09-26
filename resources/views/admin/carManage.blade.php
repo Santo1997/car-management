@@ -27,6 +27,7 @@
     @section('script')
         <script>
             async function getCarList() {
+                showLoader();
                 let carList = document.getElementById("car-list");
                 let res = await axios.get("/api/admin/cars");
                 let carData = res.data.data;
@@ -56,6 +57,7 @@
                           <button data-id="${car.id}" class="btn btn-error text-white dltBtn">Delete ${car.id}</button>
                         </td>
                       </tr>`;
+                        showLoader(false)
                     });
             }
 
@@ -71,7 +73,6 @@
                         .then((res) => {
                             if (res.data.msg === "success") {
                                 getCarList();
-                                showLoader(false);
                                 toaster("Car Deleted Successfully");
                             }
                         })

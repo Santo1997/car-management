@@ -15,7 +15,7 @@
                         <th>Actions</th>
                     </tr>
                     </thead>
-                    <tbody id="car-list"></tbody>
+                    <tbody id="customer-list"></tbody>
                 </table>
             </div>
         </div>
@@ -23,27 +23,105 @@
 
     @section('script')
         <script>
-            async function getCarList() {
-                let carList = document.getElementById("car-list");
-                let res = await axios.get("../../sample/cars.json");
-                console.log(res.data);
-                res.data.map((car) => {
-                    carList.innerHTML += `<tr>
-                        <td>${car.id}</td>
-                        <td>${car.name}</td>
-                        <td>${car.brand}</td>
-                        <td>${car.model}</td>
-                        <td>${car.year}</td>
-                        <td>${car.availability}</td>
+            async function getCustomerList() {
+                showLoader();
+                let carList = document.getElementById("customer-list");
+                let res = await axios.get("/api/admin/customers");
+                let customerData = res.data.data;
+                customerData.innerHTML = " ";
+
+                customerData
+                    .sort((a, b) => b.id - a.id)
+                    .map((customer) => {
+                        carList.innerHTML += `<tr>
+                        <td>${customer.id}</td>
+                        <td>${customer.name}</td>
+                        <td>${customer.email}</td>
+                        <td>${customer.phone}</td>
+                        <td>${customer.address}</td>
+                        <td>${customer?.year}</td>
                         <td>
-                          <a href="/admin/update-customer?id=${car.id}" class="btn btn-warning text-white">Edit</a>
-                          <button class="btn btn-error text-white dltBtn">Delete</button>
+                          <a href="/admin/update-customer?id=${customer.id}" class="btn btn-warning text-white">Edit</a>
+                          <button data-id="${customer.id}" class="btn btn-error text-white dltCustomer">Delete</button>
                         </td>
                       </tr>`;
-                });
+                    });
+                showLoader(false);
             }
 
-            getCarList();
+            async function getCustomerList() {
+                showLoader();
+                let carList = document.getElementById("customer-list");
+                let res = await axios.get("/api/admin/customers");
+                let customerData = res.data.data;
+
+                carList.innerHTML = " ";
+
+                customerData
+                    .sort((a, b) => b.id - a.id)
+                    .map((customer) => {
+                        carList.innerHTML += `<tr>
+                            <td>${customer.id}</td>
+                            <td>${customer.name}</td>
+                            <td>${customer.email}</td>
+                            <td>${customer.phone}</td>
+                            <td>${customer.address}</td>
+                            <td>${customer?.year}</td>
+                            <td>
+                                <a href="/admin/update-customer?id=${customer.id}" class="btn btn-warning text-white">Edit</a>
+                                <button data-id="${customer.id}" class="btn btn-error text-white dltCustomer">Delete</button>
+                            </td>
+                        </tr>`;
+                    });
+                showLoader(false);
+            }
+
+            document.addEventListener("click", function (event) {
+                if (event.target.classList.contains("dltCustomer")) {
+                    showLoader(); // Show loader for delete operation
+                    let id = event.target.getAttribute("data-id");
+
+                    axios
+                        .post("/api/admin/deleteCustomer", {id: id})
+                        .then((res) => {
+                            if (res.data.msg === "success") {
+                                getCustomerList();
+                                toaster("Customer Deleted Successfully");
+                            } else {
+                                toaster("Failed to delete customer");
+                            }
+                            showLoader(false);
+                        })
+                        .catch((err) => {
+                            showLoader(false);
+                            toaster("Something went wrong");
+                        });
+                }
+            });
+
+            document.addEventListener("click", function (event) {
+                showLoader();
+                if (event.target.classList.contains("dltCustomer")) {
+                    let id = event.target.getAttribute("data-id");
+
+                    axios
+                        .post("/api/admin/deleteCustomer", {
+                            "id": id,
+                        })
+                        .then((res) => {
+                            if (res.data.msg === "success") {
+                                getCustomerList();
+                                toaster("Customer Deleted Successfully");
+                            }
+                        })
+                        .catch((err) => {
+                            showLoader(false);
+                            toaster("Something went wrong");
+                        });
+                }
+            });
+
+            getCustomerList();
         </script>
     @endsection
 </x-admin>

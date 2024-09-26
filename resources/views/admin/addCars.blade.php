@@ -71,6 +71,7 @@
                     .then((res) => {
                         showLoader(false);
                         event.target.reset();
+                        window.location.href = "/admin/car-manage";
                         toaster("Car Added Successfully");
                     })
                     .catch((error) => {
