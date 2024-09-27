@@ -49,47 +49,6 @@
 
     @section('script')
         <script>
-            async function getRentalCars() {
-                showLoader();
-                let currentBookings = document.getElementById("current-bookings");
-                let pastBookings = document.getElementById("past-bookings");
-
-                currentBookings.innerHTML = " ";
-                pastBookings.innerHTML = " ";
-
-                let today = new Date().toISOString().split("T")[0];
-                let res = await axios.post("/api/rentalInfo", {user_id: 5});
-                let rentalData = res.data.data;
-
-
-                rentalData = rentalData.map((rent) => {
-                    if (rent.end_date < today) {
-                        return {...rent, status: "Completed"};
-                    } else if (rent.start_date <= today && today <= rent.end_date) {
-                        return {...rent, status: "Running"};
-                    } else if (rent.start_date > today) {
-                        return {...rent, status: "Pending"};
-                    }
-                    return rent;
-                });
-
-                let currentRent = rentalData.filter((rent) => rent.status === "Running" || rent.status === "Pending");
-                let pastRent = rentalData.filter((rent) => rent.status === "Completed");
-
-                currentRent
-                    .sort((a, b) => new Date(a.start_date) - new Date(b.start_date))
-                    .map((rent) => {
-                        currentBookings.innerHTML += tableRow(rent);
-                    });
-
-                pastRent
-                    .sort((a, b) => new Date(b.end_date) - new Date(a.end_date))
-                    .map((rent) => {
-                        pastBookings.innerHTML += tableRow(rent);
-                    });
-
-                showLoader(false);
-            }
 
             function tableRow(rent) {
                 let isDisabled = (rent.status === "Running" || rent.status === "Completed") ? 'disabled="disabled"' : '';
@@ -114,11 +73,69 @@
                       <td>${rent.start_date}</td>
                       <td>${rent.end_date}</td>
                       <td>${rent.status}</td>
-                      <th><button ${isDisabled} data-id="${rent.id}" class="btn btn-ghost btn-sm bg-error text-white cancelBtn">Cancel ${rent.id}</button></th>
+                      <th><button ${isDisabled} data-id="${rent.id}" class="btn btn-ghost btn-sm bg-error text-white cancelBtn">Cancel</button></th>
                     </tr>
                   `;
 
                 return row;
+            }
+
+            function updateBookings(rentArray, bookingElement, emptyMessage) {
+                if (rentArray.length === 0) {
+                    bookingElement.innerHTML = `
+                        <tr>
+                            <td colspan="6" class="text-center">
+                                <p class="text-gray-500">${emptyMessage}</p>
+                            </td>
+                        </tr>
+                    `;
+                } else {
+                    rentArray
+                        .map((rent) => {
+                            bookingElement.innerHTML += tableRow(rent);
+                        });
+                }
+            }
+
+            async function getRentalCars() {
+                showLoader();
+                let currentBookings = document.getElementById("current-bookings");
+                let pastBookings = document.getElementById("past-bookings");
+
+                currentBookings.innerHTML = " ";
+                pastBookings.innerHTML = " ";
+
+                let parts = new Date().toLocaleDateString("en-BD", {
+                    timeZone: "Asia/Dhaka",
+                    year: "numeric",
+                    month: "2-digit",
+                    day: "2-digit"
+                }).split('/');
+                let today = parts[2] + "-" + parts[0] + "-" + parts[1];
+
+                let res = await axios.get("/api/rentalInfo");
+                let rentalData = res.data.data;
+
+                rentalData = rentalData.map((rent) => {
+                    if (rent.end_date < today) {
+                        return {...rent, status: "Completed"};
+                    } else if (rent.start_date <= today && today <= rent.end_date) {
+                        return {...rent, status: "Running"};
+                    } else if (rent.start_date > today) {
+                        return {...rent, status: "Pending"};
+                    }
+                    return rent;
+                });
+
+                let currentRent = rentalData.filter((rent) => rent.status === "Running" || rent.status === "Pending");
+                let pastRent = rentalData.filter((rent) => rent.status === "Completed");
+                let sortedCurrent = currentRent.sort((a, b) => (a.start_date) - (b.start_date))
+                let sortedPast = pastRent.sort((a, b) => (b.end_date) - (a.end_date))
+
+
+                updateBookings(sortedCurrent, currentBookings, "No current bookings");
+                updateBookings(sortedPast, pastBookings, "No past bookings");
+                showLoader(false);
             }
 
             document.addEventListener("click", function (event) {
@@ -127,7 +144,6 @@
 
                     axios
                         .post("/api/deleteRental", {
-                            "user_id": 5,
                             "rental_id": id
                         })
                         .then((res) => {

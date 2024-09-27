@@ -55,6 +55,12 @@
 
     @section('script')
         <script>
+
+            function redirectToLogin() {
+                toaster("Please login first!", false);
+                window.location.href = "/login";
+            }
+
             async function fetchCars() {
                 showLoader();
 
@@ -112,17 +118,24 @@
             }
 
             function carDetails(filteredCars) {
+                let authUser = @json(Auth::user());
                 let carList = document.getElementById("car-list");
+
                 carList.innerHTML = " ";
                 filteredCars.forEach((car) => {
-                    carList.innerHTML += `<div class="bg-white shadow-md rounded-lg p-4">
-                              <img src="${car.image}" alt="Car" class="w-full h-40 object-cover rounded-md mb-4" />
-                              <h3 class="text-lg font-semibold">${car.name}</h3>
-                              <p class="text-gray-700"><span class="font-bold">Type:</span> ${car.car_type}</p>
-                              <p class="text-gray-700"><span class="font-bold">Brand:</span> ${car.brand}</p>
-                              <p class="text-gray-700"><span class="font-bold">Rent:</span> $${car.daily_rent_price}/day</p>
-                              <button data-id="${car.id}" data-name="${car.name}" data-cost="${car.daily_rent_price}" class="mt-4 bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 booking">Book Now</button>
-                            </div>`;
+                    carList.innerHTML += `
+                    <div class="bg-white shadow-md rounded-lg p-4">
+                        <img src="${car.image}" alt="Car" class="w-full h-40 object-cover rounded-md mb-4" />
+                        <h3 class="text-lg font-semibold">${car.name}</h3>
+                        <p class="text-gray-700"><span class="font-bold">Type:</span> ${car.car_type}</p>
+                        <p class="text-gray-700"><span class="font-bold">Brand:</span> ${car.brand}</p>
+                        <p class="text-gray-700"><span class="font-bold">Rent:</span> $${car.daily_rent_price}/day</p>
+                        ${authUser !== null
+                        ? `<button data-id="${car.id}" data-name="${car.name}" data-cost="${car.daily_rent_price}" class="mt-4 bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 booking">Book Now</button>`
+                        : `<button onclick="redirectToLogin()" class="mt-4 bg-blue-400 text-white px-4 py-2 rounded hover:bg-blue-500">Book Now</button>`
+                    }
+                    </div>
+                    `;
                 });
             }
 
@@ -167,7 +180,6 @@
 
                 let bookingDetails = {
                     "car_id": carID,
-                    "user_id": 5,
                     "start_date": bookedDates[0],
                     "end_date": bookedDates[1],
                     "cost": carCost
@@ -180,14 +192,19 @@
                     .then((response) => {
                         if (response.data.msg === "success") {
                             toaster("Car booked successfully");
+                        } else {
+                            toaster("Login First", false);
+                            window.location.href = "/login";
                         }
                     })
                     .catch((error) => {
                         toaster("Something went wrong", false);
-                    });
+                    })
+                    .finally(() => {
+                        showLoader(false);
+                        bookingModal.close();
+                    })
 
-                showLoader(false);
-                bookingModal.close();
             }
 
             async function dateBooked(id) {

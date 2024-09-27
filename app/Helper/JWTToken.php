@@ -15,21 +15,8 @@
                 'iss' => 'laravel-token',
                 'iat' => time(),
                 'exp' => time() + 60 * 60,
+                'userId' => $id,
                 'userMail' => $email,
-                'userId' => $id
-            ];
-
-            return JWT::encode($payload, $key, 'HS256');
-        }
-
-        public static function passwordToken($email): string {
-            $key = env('JWT_KEY');
-            $payload = [
-                'iss' => 'laravel-token',
-                'iat' => time(),
-                'exp' => time() + 60 * 20,
-                'userMail' => $email,
-                'userId' => '0'
             ];
 
             return JWT::encode($payload, $key, 'HS256');

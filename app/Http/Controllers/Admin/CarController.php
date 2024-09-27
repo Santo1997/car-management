@@ -5,10 +5,27 @@
     use App\Helper\ResponseHelper;
     use App\Http\Controllers\Controller;
     use App\Models\Car;
+    use App\Models\Rental;
     use Exception;
     use Illuminate\Http\Request;
 
     class CarController extends Controller {
+
+        public function totalDetails() {
+            $totalCars = Car::count();
+            $availableCars = Car::where('availability', '1')->count();
+            $totalRentals = Rental::count();
+            $totalEarnings = Rental::sum('total_cost');
+
+            $totalDetails = [
+                'total' => $totalCars,
+                'available' => $availableCars,
+                'rentals' => $totalRentals,
+                'earnings' => $totalEarnings
+            ];
+            return ResponseHelper::out('success', $totalDetails, 200);
+        }
+
         public function carsList() {
             $carsList = Car::all();
             return ResponseHelper::out('success', $carsList, 200);
@@ -37,7 +54,6 @@
                 return $e->getMessage(); //ResponseHelper::out('error', 0, 401);
             }
         }
-
 
         public function updateCar(Request $request, $id) {
             $car = Car::where('id', $id)->update([

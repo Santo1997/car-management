@@ -8,8 +8,7 @@
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css"/>
-
-    <title>Document</title>
+    <title>Car Rental</title>
 
     <style>
         .flatpickr-calendar {
@@ -17,8 +16,8 @@
         }
     </style>
 </head>
-<body>
-<header>
+<body class="relative">
+<header class="sticky top-0 z-50">
     <div class="navbar bg-slate-800 text-white">
         <div class="navbar-start">
             <a class="btn btn-ghost text-xl">Car Rental</a>
@@ -35,14 +34,23 @@
                 </li>
                 <li><a class="btn btn-outline text-white border-slate-800 hover:text-info hover:border-info">Contact</a>
                 </li>
-                <li>
-                    <a href="{{url('/login')}}"
-                       class="btn btn-outline text-white border-slate-800 hover:text-info hover:border-info">Login</a>
-                </li>
-                <li>
-                    <a href="{{url('/register')}}"
-                       class="btn btn-outline text-white border-slate-800 hover:text-info hover:border-info">Singup</a>
-                </li>
+
+                @if(Auth::user())
+                    <li>
+                        <a href="{{url('/api/logoutUser')}}"
+                           class="btn btn-outline text-white border-slate-800 hover:text-info hover:border-info">Logout</a>
+                    </li>
+                @else
+                    <li>
+                        <a href="{{url('/login')}}"
+                           class="btn btn-outline text-white border-slate-800 hover:text-info hover:border-info">Login</a>
+                    </li>
+                    <li>
+                        <a href="{{url('/register')}}"
+                           class="btn btn-outline text-white border-slate-800 hover:text-info hover:border-info">Singup</a>
+                    </li>
+                @endif
+
             </ul>
         </div>
     </div>

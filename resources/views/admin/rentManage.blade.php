@@ -15,7 +15,7 @@
                         <th>Actions</th>
                     </tr>
                     </thead>
-                    <tbody id="car-list"></tbody>
+                    <tbody id="rental-list"></tbody>
                 </table>
             </div>
         </div>
@@ -23,27 +23,66 @@
 
     @section('script')
         <script>
-            async function getCarList() {
-                let carList = document.getElementById("car-list");
-                let res = await axios.get("../../sample/cars.json");
-                console.log(res.data);
-                res.data.map((car) => {
-                    carList.innerHTML += `<tr>
-                        <td>${car.id}</td>
-                        <td>${car.name}</td>
-                        <td>${car.brand}</td>
-                        <td>${car.model}</td>
-                        <td>${car.year}</td>
-                        <td>${car.availability}</td>
+            async function getRentalList() {
+                showLoader();
+                let rentList = document.getElementById("rental-list");
+                let res = await axios.get("/api/admin/rentals");
+                let today = new Date().toISOString().split("T")[0];
+                let rentalData = res.data.data;
+                rentList.innerHTML = "";
+
+                rentalData = rentalData.map((rent) => {
+                    if (rent.end_date < today) {
+                        return {...rent, status: "Completed"};
+                    } else if (rent.start_date <= today && today <= rent.end_date) {
+                        return {...rent, status: "Running"};
+                    } else if (rent.start_date > today) {
+                        return {...rent, status: "Pending"};
+                    }
+                    return rent;
+                });
+
+                rentalData
+                    .sort((a, b) => b.id - a.id)
+                    .map((rent) => {
+                        rentList.innerHTML += `<tr>
+                        <td>${rent.id}</td>
+                        <td>${rent.user.name}</td>
+                        <td>${rent.car.name}</td>
+                        <td>${rent.start_date} - ${rent.end_date}</td>
+                        <td>${rent.total_cost}</td>
+                        <td>${rent.status}</td>
                         <td>
-                          <a href="./updateRental.html?id=${car.id}" class="btn btn-warning text-white">Edit</a>
-                          <button class="btn btn-error text-white dltBtn">Delete</button>
+                          <button data-id="${rent.id}" class="btn btn-error text-white dltRentalBtn">Delete</button>
                         </td>
                       </tr>`;
-                });
+                        showLoader(false);
+                    });
             }
 
-            getCarList();
+            document.addEventListener("click", function (event) {
+                showLoader();
+                if (event.target.classList.contains("dltRentalBtn")) {
+                    let id = event.target.getAttribute("data-id");
+
+                    axios
+                        .post("/api/admin/deleteRental", {
+                            "id": id,
+                        })
+                        .then((res) => {
+                            if (res.data.msg === "success") {
+                                getRentalList();
+                                toaster("Customer Deleted Successfully");
+                            }
+                        })
+                        .catch((err) => {
+                            showLoader(false);
+                            toaster("Something went wrong");
+                        });
+                }
+            });
+
+            getRentalList();
         </script>
     @endsection
 </x-admin>

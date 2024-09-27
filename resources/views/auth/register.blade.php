@@ -8,26 +8,48 @@
                     quasi. In deleniti eaque aut repudiandae et a id nisi.
                 </p>
             </div>
-            <div class="card bg-base-100 w-full max-w-sm shrink-0 shadow-2xl">
-                <div class="card-body">
+            <div class="card bg-base-100 w-full max-w-md shrink-0 shadow-2xl">
+                <form onsubmit="register(event)" class="card-body">
+                    <div class="form-control">
+                        <label class="label">
+                            <span class="label-text">Username</span>
+                        </label>
+                        <input type="text" id="user" placeholder="Username" class="input input-bordered" required/>
+                    </div>
+                    <div class="form-control">
+                        <label class="label">
+                            <span class="label-text">Phone Number</span>
+                        </label>
+                        <input type="text" id="phone" placeholder="Phone Number" class="input input-bordered" required/>
+                    </div>
                     <div class="form-control">
                         <label class="label">
                             <span class="label-text">Email</span>
                         </label>
-                        <input type="email" id="email" placeholder="email" class="input input-bordered"
-                               value="mail@mail.com"/>
+                        <input type="email" id="email" placeholder="email" class="input input-bordered" required/>
+                    </div>
+                    <div class="form-control">
+                        <label class="label">
+                            <span class="label-text">Address</span>
+                        </label>
+                        <input type="text" id="address" placeholder="Address" class="input input-bordered" required/>
                     </div>
                     <div class="form-control">
                         <label class="label">
                             <span class="label-text">Password</span>
                         </label>
                         <input type="password" id="password" placeholder="password" class="input input-bordered"
-                               value="123"/>
+                               required/>
+                    </div>
+                    <div class="form-control w-fit">
+                        <label class="label label-text">
+                            Have an account? <a href="{{url('/login')}}" class="link link-hover ml-1"> Sign in</a>
+                        </label>
                     </div>
                     <div class="form-control mt-6">
-                        <button onclick="login()" class="btn btn-primary">Register</button>
+                        <button class="btn btn-primary">Register Now</button>
                     </div>
-                </div>
+                </form>
             </div>
         </div>
     </div>
@@ -35,27 +57,29 @@
 
     @section('script')
         <script>
-            async function register() {
-                loader();
-                const email = document.getElementById('email').value;
-                const password = document.getElementById('password').value;
-                try {
-                    let res = await axios.post('/userLogin', {
-                        email: email,
-                        password: password
-                    });
-                    if (res.status === 200) {
-                        let mgs = res.data.msg;
-                        window.location.href = '/userDash';
-                        toaster(mgs);
-                    } else {
-                        toaster(res.data.msg, false);
-                    }
-                } catch (error) {
-                    toaster(error.response.data.msg, false);
-                } finally {
-                    loader(false);
-                }
+            function register(event) {
+                event.preventDefault();
+                showLoader();
+                let form = event.target;
+                let register = {
+                    name: form.user.value,
+                    phone: form.phone.value,
+                    email: form.email.value,
+                    address: form.address.value,
+                    password: form.password.value
+                };
+
+                axios.post('/api/addCustomer', register)
+                    .then(res => {
+                        toaster(res.data.msg);
+                        window.location.href = '/login';
+                    })
+                    .catch(error => {
+                        toaster('Something went wrong', false);
+                    })
+                    .finally(() => {
+                        showLoader(false);
+                    })
             }
         </script>
     @endsection
