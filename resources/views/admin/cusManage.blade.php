@@ -1,5 +1,5 @@
 <x-admin>
-    <section class="container min-h-[calc(100vh-56px)] mx-auto pt-20 pb-10">
+    <section class="container min-h-[calc(100vh-140px)] mx-auto py-10">
         <h1 class="text-3xl font-bold text-gray-800 mb-4">All Customers</h1>
         <div class="bg-white shadow-md rounded-lg overflow-hidden">
             <div class="overflow-x-auto">
@@ -47,6 +47,7 @@
                             </td>
                         </tr>`;
                     });
+
                 showLoader(false);
             }
 
@@ -60,14 +61,14 @@
                             "id": id,
                         })
                         .then((res) => {
-                            if (res.data.msg === "success") {
-                                getCustomerList();
-                                toaster("Customer Deleted Successfully");
-                            }
+                            getCustomerList();
+                            toaster("Customer Deleted Successfully");
                         })
                         .catch((err) => {
-                            showLoader(false);
                             toaster("Something went wrong");
+                        })
+                        .finally(() => {
+                            showLoader(false);
                         });
                 }
             });

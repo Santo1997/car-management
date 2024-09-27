@@ -37,7 +37,7 @@
 
                 @if(Auth::user())
                     <li>
-                        <a href="{{url('/api/logoutUser')}}"
+                        <a href="{{url('/logout')}}"
                            class="btn btn-outline text-white border-slate-800 hover:text-info hover:border-info">Logout</a>
                     </li>
                 @else

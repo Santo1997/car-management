@@ -1,6 +1,6 @@
 <x-layout>
-    <div class="hero bg-base-200 min-h-screen">
-        <div class="hero-content flex-col lg:flex-row-reverse gap-5">
+    <div class="hero bg-base-200 min-h-[calc(100vh-80px)]">
+        <div class="hero-content flex-col lg:flex-row-reverse gap-10">
             <div class="text-center lg:text-left">
                 <h1 class="text-5xl font-bold">Register now</h1>
                 <p class="py-6">

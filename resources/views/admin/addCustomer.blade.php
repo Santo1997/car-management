@@ -1,5 +1,5 @@
 <x-admin>
-    <section class="container min-h-[calc(100vh-56px)] mx-auto pt-20 pb-10">
+    <section class="container min-h-[calc(100vh-140px)] mx-auto py-10">
         <h1 class="text-2xl font-bold mb-10">Add Customer</h1>
 
         <div class="bg-white p-6 rounded-lg shadow-lg mb-8 ms-10 max-w-2xl">
@@ -38,7 +38,7 @@
                 showLoader();
                 let form = event.target;
 
-                const newCustomer = {
+                let newCustomer = {
                     name: form.customer.value,
                     email: form.email.value,
                     phone: form.phone.value,
@@ -47,16 +47,17 @@
                 };
 
                 axios
-                    .post("/api/admin/addCustomer", newCustomer)
+                    .post("/api/addCustomer", newCustomer)
                     .then((res) => {
-                        showLoader(false);
                         event.target.reset();
                         window.location.href = "/admin/customer-manage";
                         toaster("Customer Added Successfully");
                     })
                     .catch((error) => {
-                        showLoader(false);
                         toaster("Something went wrong");
+                    })
+                    .finally(() => {
+                        showLoader(false);
                     });
             }
         </script>

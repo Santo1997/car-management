@@ -1,5 +1,5 @@
 <x-admin>
-    <section class="min-h-[calc(100vh-56px)] pt-14">
+    <section class="min-h-[calc(100vh-140px)] ">
         <div class="container mx-auto py-8">
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                 <div class="bg-white shadow-lg rounded-lg p-6">
@@ -26,6 +26,7 @@
         <script>
 
             async function getTotalDetails() {
+                showLoader();
                 let totalCars = document.getElementById("totalCars");
                 let availableCars = document.getElementById("availableCars");
                 let totalRentals = document.getElementById("totalRentals");
@@ -36,6 +37,7 @@
                 availableCars.innerHTML = totalDetails.available;
                 totalRentals.innerHTML = totalDetails.rentals;
                 totalEarnings.innerHTML = totalDetails.earnings;
+                showLoader(false);
             }
 
             getTotalDetails();

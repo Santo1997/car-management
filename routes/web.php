@@ -43,7 +43,7 @@
 
     Route::post('/api/addCustomer', [AdminCustomerController::class, 'createCustomer']);
     Route::post('/api/loginUser', [AdminCustomerController::class, 'loginUser']);
-    Route::get('/api/logoutUser', [AdminCustomerController::class, 'logoutUser']);
+    Route::get('/logout', [AdminCustomerController::class, 'logoutUser']);
     Route::get('/api/admin/customers', [AdminCustomerController::class, 'customersList'])->middleware([TokenAuthentic::class]);
     Route::get('/api/admin/customerDetails/{id}', [AdminCustomerController::class, 'customerDetails'])->middleware([TokenAuthentic::class]);
     Route::post('/api/admin/updateCustomer/{id}', [AdminCustomerController::class, 'updateCustomer'])->middleware([TokenAuthentic::class]);

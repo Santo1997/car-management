@@ -1,5 +1,5 @@
 <x-admin>
-    <section class="container min-h-[calc(100vh-56px)] mx-auto pt-20 pb-10">
+    <section class="container min-h-[calc(100vh-140px)] mx-auto py-10">
         <h1 class="text-2xl font-bold mb-10">Update Car : <span id="upId"></span></h1>
         <div class="bg-white p-6 rounded-lg shadow-lg mb-8 ms-10 max-w-2xl">
             <form id="updateCarForm" onsubmit="updateCars(event)" class="grid gap-4">
@@ -89,13 +89,14 @@
                 axios
                     .post(`/api/admin/updateCar/${params.get("id")}`, updateCar)
                     .then((res) => {
-                        showLoader(false);
                         window.location.href = "/admin/car-manage";
                         toaster("Car Updated Successfully");
                     })
                     .catch((error) => {
-                        showLoader(false);
                         toaster("Something went wrong");
+                    })
+                    .finally(() => {
+                        showLoader(false);
                     });
             }
 

@@ -1,5 +1,5 @@
 <x-admin>
-    <section class="container min-h-[calc(100vh-56px)] mx-auto pt-20 pb-10">
+    <section class="container min-h-[calc(100vh-140px)] mx-auto py-10">
         <h1 class="text-2xl font-bold mb-10">Update Customer : <span id="ucId"></span></h1>
         <div class="bg-white p-6 rounded-lg shadow-lg mb-8 ms-10 max-w-2xl">
             <form id="updateCustomerForm" onsubmit="updateCustomer(event)" class="grid gap-4">
@@ -10,8 +10,8 @@
                 <div>
                     <label for="upRole" class="block text-gray-700">Customer Role</label>
                     <select id="upRole" class="w-full p-2 border border-gray-300 rounded-md">
-                        <option value="Admin">Admin</option>
-                        <option value="Customer">Customer</option>
+                        <option value="admin">Admin</option>
+                        <option value="customer">Customer</option>
                     </select>
                 </div>
                 <div>
@@ -51,7 +51,7 @@
 
                 document.getElementById("ucId").innerHTML = customerInfo.name;
                 form.upCustomer.value = customerInfo.name;
-                form.upRole.value = customerInfo.role === "admin" ? "Admin" : "Customer";
+                form.upRole.value = customerInfo.role === "admin" ? "admin" : "customer";
                 form.email.value = customerInfo.email;
                 form.upPhone.value = customerInfo.phone;
                 form.upAddress.value = customerInfo.address;
@@ -75,13 +75,14 @@
                 axios
                     .post(`/api/admin/updateCustomer/${params.get("id")}`, updateCustomer)
                     .then((res) => {
-                        showLoader(false);
                         window.location.href = "/admin/customer-manage";
                         toaster("Customer Updated Successfully");
                     })
                     .catch((error) => {
-                        showLoader(false);
                         toaster("Something went wrong");
+                    })
+                    .finally(() => {
+                        showLoader(false);
                     });
             }
 

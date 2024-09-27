@@ -1,5 +1,5 @@
 <x-admin>
-    <section class="container min-h-[calc(100vh-56px)] mx-auto pt-20 pb-10">
+    <section class="container min-h-[calc(100vh-140px)] mx-auto py-10">
         <h1 class="text-3xl font-bold text-gray-800 mb-4">All Rents</h1>
         <div class="bg-white shadow-md rounded-lg overflow-hidden">
             <div class="overflow-x-auto">
@@ -26,10 +26,16 @@
             async function getRentalList() {
                 showLoader();
                 let rentList = document.getElementById("rental-list");
+                let parts = new Date().toLocaleDateString("en-BD", {
+                    timeZone: "Asia/Dhaka",
+                    year: "numeric",
+                    month: "2-digit",
+                    day: "2-digit"
+                }).split('/');
+                let today = parts[2] + "-" + parts[0] + "-" + parts[1];
                 let res = await axios.get("/api/admin/rentals");
-                let today = new Date().toISOString().split("T")[0];
                 let rentalData = res.data.data;
-                rentList.innerHTML = "";
+                rentList.innerHTML = " ";
 
                 rentalData = rentalData.map((rent) => {
                     if (rent.end_date < today) {
@@ -56,8 +62,9 @@
                           <button data-id="${rent.id}" class="btn btn-error text-white dltRentalBtn">Delete</button>
                         </td>
                       </tr>`;
-                        showLoader(false);
                     });
+
+                showLoader(false);
             }
 
             document.addEventListener("click", function (event) {
@@ -70,14 +77,14 @@
                             "id": id,
                         })
                         .then((res) => {
-                            if (res.data.msg === "success") {
-                                getRentalList();
-                                toaster("Customer Deleted Successfully");
-                            }
+                            getRentalList();
+                            toaster("Customer Deleted Successfully");
                         })
                         .catch((err) => {
-                            showLoader(false);
                             toaster("Something went wrong");
+                        })
+                        .finally(() => {
+                            showLoader(false);
                         });
                 }
             });

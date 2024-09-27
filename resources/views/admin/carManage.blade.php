@@ -1,5 +1,5 @@
 <x-admin>
-    <section class="container min-h-[calc(100vh-56px)] mx-auto pt-20 pb-10">
+    <section class="container min-h-[calc(100vh-140px)] mx-auto py-10">
         <h1 class="text-3xl font-bold text-gray-800 mb-5">All Cars</h1>
         <div class="bg-white shadow-md rounded-lg overflow-hidden">
             <div class="overflow-x-auto">
@@ -51,14 +51,15 @@
                         <td>${car.year}</td>
                         <td>${car.car_type}</td>
                         <td>${car.daily_rent_price}</td>
-                        <td>${car.availability}</td>
+                        <td>${car.availability ? "Available" : "Not Available"}</td>
                         <td>
                           <a href="/admin/update-car?id=${car.id}" class="btn btn-warning text-white">Edit</a>
-                          <button data-id="${car.id}" class="btn btn-error text-white dltBtn">Delete ${car.id}</button>
+                          <button data-id="${car.id}" class="btn btn-error text-white dltBtn">Delete</button>
                         </td>
                       </tr>`;
-                        showLoader(false)
                     });
+
+                showLoader(false);
             }
 
             document.addEventListener("click", function (event) {
@@ -71,14 +72,14 @@
                             "id": id,
                         })
                         .then((res) => {
-                            if (res.data.msg === "success") {
-                                getCarList();
-                                toaster("Car Deleted Successfully");
-                            }
+                            getCarList();
+                            toaster("Car Deleted Successfully");
                         })
                         .catch((err) => {
-                            showLoader(false);
                             toaster("Something went wrong");
+                        })
+                        .finally(() => {
+                            showLoader(false);
                         });
                 }
             });

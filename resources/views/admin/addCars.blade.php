@@ -1,5 +1,5 @@
 <x-admin>
-    <section class="container min-h-[calc(100vh-56px)] mx-auto pt-20">
+    <section class="container min-h-[calc(100vh-140px)] mx-auto py-10">
         <h1 class="text-2xl font-bold mb-5">Add Car</h1>
 
         <div class="bg-white p-6 rounded-lg shadow-lg mb-8 ms-10 max-w-2xl">
@@ -69,14 +69,15 @@
                 axios
                     .post("/api/admin/addCar", car)
                     .then((res) => {
-                        showLoader(false);
                         event.target.reset();
                         window.location.href = "/admin/car-manage";
                         toaster("Car Added Successfully");
                     })
                     .catch((error) => {
-                        showLoader(false);
                         toaster("Something went wrong");
+                    })
+                    .finally(() => {
+                        showLoader(false);
                     });
             }
         </script>
