@@ -9,7 +9,7 @@
 
     class CarController extends Controller {
         public function carsList() {
-            $carsList = Car::all();
+            $carsList = Car::where('availability', 1)->get();
             return ResponseHelper::out('success', $carsList, 200);
         } //ok
     }

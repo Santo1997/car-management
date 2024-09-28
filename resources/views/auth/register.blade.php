@@ -4,8 +4,10 @@
             <div class="text-center lg:text-left">
                 <h1 class="text-5xl font-bold">Register now</h1>
                 <p class="py-6">
-                    Provident cupiditate voluptatem et in. Quaerat fugiat ut assumenda excepturi exercitationem
-                    quasi. In deleniti eaque aut repudiandae et a id nisi.
+                    Join our community and start your journey with ease! By registering, you gain access to exclusive
+                    deals, a streamlined booking process, and personalized recommendations tailored to your travel
+                    needs. It only takes a few moments to set up your account—sign up now and unlock the keys to your
+                    next adventure on the road!
                 </p>
             </div>
             <div class="card bg-base-100 w-full max-w-md shrink-0 shadow-2xl">

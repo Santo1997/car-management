@@ -4,8 +4,9 @@
             <div class="text-center lg:text-left">
                 <h1 class="text-5xl font-bold">Login now</h1>
                 <p class="py-6">
-                    Provident cupiditate voluptatem et in. Quaerat fugiat ut assumenda excepturi exercitationem
-                    quasi. In deleniti eaque aut repudiandae et a id nisi.
+                    Gain instant access to your personalized car rental experience. By logging in, you can easily manage
+                    your bookings, browse our extensive fleet of vehicles, and take advantage of exclusive offers. Don't
+                    miss the chance to drive your dream car—log in today and hit the road with ease!
                 </p>
             </div>
             <div class="card bg-base-100 w-full max-w-sm shrink-0 shadow-2xl">

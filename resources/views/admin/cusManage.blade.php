@@ -11,7 +11,6 @@
                         <th>Email</th>
                         <th>Phone Number</th>
                         <th>Address</th>
-                        <th>Rental History</th>
                         <th>Actions</th>
                     </tr>
                     </thead>
@@ -40,7 +39,6 @@
                             <td>${customer.email}</td>
                             <td>${customer.phone}</td>
                             <td>${customer.address}</td>
-                            <td>${customer?.year}</td>
                             <td>
                                 <a href="/admin/update-customer?id=${customer.id}" class="btn btn-warning text-white">Edit</a>
                                 <button data-id="${customer.id}" class="btn btn-error text-white dltCustomer">Delete</button>
