@@ -14,6 +14,7 @@
                 $table->date('start_date');
                 $table->date('end_date');
                 $table->decimal('total_cost', 8, 2);
+                $table->string('status');
                 $table->foreignId('car_id')->constrained('cars')->restrictOnDelete()->cascadeOnUpdate();
                 $table->foreignId('user_id')->constrained('users')->restrictOnDelete()->cascadeOnUpdate();
                 $table->timestamp('updated_at')->useCurrent()->useCurrentOnUpdate();

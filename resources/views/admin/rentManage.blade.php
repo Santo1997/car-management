@@ -41,7 +41,7 @@
                     if (rent.end_date < today) {
                         return {...rent, status: "Completed"};
                     } else if (rent.start_date <= today && today <= rent.end_date) {
-                        return {...rent, status: "Running"};
+                        return {...rent, status: "Ongoing"};
                     } else if (rent.start_date > today) {
                         return {...rent, status: "Pending"};
                     }
@@ -50,12 +50,12 @@
 
                 rentalData
                     .sort((a, b) => b.id - a.id)
-                    .map((rent) => {
+                    .map((rent, idx) => {
                         rentList.innerHTML += `<tr>
-                        <td>${rent.id}</td>
+                        <td>${idx + 1}</td>
                         <td>${rent.user.name}</td>
-                        <td>${rent.car.name}</td>
-                        <td>${rent.start_date} - ${rent.end_date}</td>
+                        <td>${rent.car.name} <br> ${rent.car.model} - ${rent.car.brand} </td>
+                        <td>${rent.start_date} to ${rent.end_date}</td>
                         <td>${rent.total_cost}</td>
                         <td>${rent.status}</td>
                         <td>
@@ -68,9 +68,10 @@
             }
 
             document.addEventListener("click", function (event) {
-                showLoader();
                 if (event.target.classList.contains("dltRentalBtn")) {
                     let id = event.target.getAttribute("data-id");
+                    event.stopPropagation();
+                    showLoader();
 
                     axios
                         .post("/api/admin/deleteRental", {

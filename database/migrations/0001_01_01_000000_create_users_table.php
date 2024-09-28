@@ -17,7 +17,6 @@
                 $table->string('phone', 255);
                 $table->string('address', 255);
                 $table->string('role', 50)->default('customer');
-                $table->string('otp', 10);
                 $table->timestamp('updated_at')->useCurrent()->useCurrentOnUpdate();
                 $table->timestamp('created_at')->useCurrent();
             });

@@ -33,9 +33,9 @@
 
                 customerData
                     .sort((a, b) => b.id - a.id)
-                    .map((customer) => {
+                    .map((customer, idx) => {
                         customerList.innerHTML += `<tr>
-                            <td>${customer.id}</td>
+                            <td>${idx + 1}</td>
                             <td>${customer.name}</td>
                             <td>${customer.email}</td>
                             <td>${customer.phone}</td>
@@ -52,9 +52,10 @@
             }
 
             document.addEventListener("click", function (event) {
-                showLoader();
                 if (event.target.classList.contains("dltCustomer")) {
                     let id = event.target.getAttribute("data-id");
+                    event.stopPropagation();
+                    showLoader();
 
                     axios
                         .post("/api/admin/deleteCustomer", {

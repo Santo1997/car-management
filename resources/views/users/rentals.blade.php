@@ -51,7 +51,7 @@
         <script>
 
             function tableRow(rent) {
-                let isDisabled = (rent.status === "Running" || rent.status === "Completed") ? 'disabled="disabled"' : '';
+                let isDisabled = (rent.status === "Ongoing" || rent.status === "Completed") ? 'disabled="disabled"' : '';
 
                 const row = `
                     <tr>
@@ -120,14 +120,14 @@
                     if (rent.end_date < today) {
                         return {...rent, status: "Completed"};
                     } else if (rent.start_date <= today && today <= rent.end_date) {
-                        return {...rent, status: "Running"};
+                        return {...rent, status: "Ongoing"};
                     } else if (rent.start_date > today) {
                         return {...rent, status: "Pending"};
                     }
                     return rent;
                 });
 
-                let currentRent = rentalData.filter((rent) => rent.status === "Running" || rent.status === "Pending");
+                let currentRent = rentalData.filter((rent) => rent.status === "Ongoing" || rent.status === "Pending");
                 let pastRent = rentalData.filter((rent) => rent.status === "Completed");
                 let sortedCurrent = currentRent.sort((a, b) => (a.start_date) - (b.start_date))
                 let sortedPast = pastRent.sort((a, b) => (b.end_date) - (a.end_date))

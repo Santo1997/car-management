@@ -63,9 +63,10 @@
             }
 
             document.addEventListener("click", function (event) {
-                showLoader();
                 if (event.target.classList.contains("dltBtn")) {
                     let id = event.target.getAttribute("data-id");
+                    event.stopPropagation();
+                    showLoader();
 
                     axios
                         .post("/api/admin/deleteCar", {
