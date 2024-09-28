@@ -77,7 +77,7 @@
                             toaster("Car Deleted Successfully");
                         })
                         .catch((err) => {
-                            toaster("Something went wrong");
+                            toaster("Something went wrong", false);
                         })
                         .finally(() => {
                             showLoader(false);

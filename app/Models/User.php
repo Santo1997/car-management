@@ -18,16 +18,10 @@
             'role',
         ];
 
-        protected $attributes = [
-            'otp' => '0',
-        ];
-
-        // Check if user is an admin
         public function isAdmin() {
             return $this->role === 'admin';
         }
 
-        // Check if user is a customer
         public function isCustomer() {
             return $this->role === 'customer';
         }

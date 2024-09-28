@@ -29,9 +29,13 @@
                 </li>
                 <li><a class="btn btn-outline text-white border-slate-800 hover:text-info hover:border-info">About</a>
                 </li>
-                <li><a href="{{url('/rentals')}}"
-                       class="btn btn-outline text-white border-slate-800 hover:text-info hover:border-info">Rentals</a>
-                </li>
+
+                @if(Auth::user())
+                    <li><a href="{{url('/rentals')}}"
+                           class="btn btn-outline text-white border-slate-800 hover:text-info hover:border-info">Rentals</a>
+                    </li>
+                @endif
+                
                 <li><a class="btn btn-outline text-white border-slate-800 hover:text-info hover:border-info">Contact</a>
                 </li>
 

@@ -52,7 +52,6 @@
             document.addEventListener("click", function (event) {
                 if (event.target.classList.contains("dltCustomer")) {
                     let id = event.target.getAttribute("data-id");
-                    event.stopPropagation();
                     showLoader();
 
                     axios
@@ -64,7 +63,7 @@
                             toaster("Customer Deleted Successfully");
                         })
                         .catch((err) => {
-                            toaster("Something went wrong");
+                            toaster("Something went wrong", false);
                         })
                         .finally(() => {
                             showLoader(false);
